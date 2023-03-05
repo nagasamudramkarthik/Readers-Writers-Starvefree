@@ -10,10 +10,16 @@ wrt = 1,mutex = 1,rd = 1,readcount = 0;
 Reader process:
 
 wait(mutex);   //this mutex is saem for readers as well as for writers
+
+
 wait(rd);   // this is for maintaining mutual exclusion b/w readers for increasing readcount atomically
+
 readcount++;
+
 if(readcount==1) wait(wrt);
+
 signal(rd);
+
 signal(mutex);
 ----------------------
 
@@ -21,8 +27,11 @@ signal(mutex);
 
 ----------------------
 wait(rd);        //for maintaining mutual exclusion b/w readers for decreasing readcount atomically
+
 readcount--;
+
 signal(rd);
+
 if(readcount==0) signal(wrt);
 
 
@@ -30,9 +39,13 @@ Writer Process:
 
 wait(mutex);
 wait(wrt);   //for maintaining mutual exclusion b/w writers
+
 ------------------------
+
 // crtical section//
+
 ------------------------
+
 signal(mutex); //whenever it releases the mutex any one can aquire based on which came first either reader or writer
 signal(wrt);                   
                    
